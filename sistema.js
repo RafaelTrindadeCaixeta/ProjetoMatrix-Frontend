@@ -21,9 +21,16 @@ function SistemaCadastro() {
 
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
         //implemente o código necessário
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            if(participantes[i].email==email){throw "O email: " +email+ ", já está cadastrado no sistema."}
-        }
+        
+       participantes.forEach(function(element) {
+           if (element.email === email) {
+               
+            throw new Error ("O email: " +email+ ", já está cadastrado no sistema.");
+            
+           }
+           return;
+       });    
+        
             
         var p = new Participante();
         p.nome = nome;
@@ -37,108 +44,101 @@ function SistemaCadastro() {
 
     function removerParticipante(email) {
         //implemente o código necessário
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            if(participantes[i].email==email){
-                participantes.splice(i,1);
-                return;
-            }
         
-        }
+        return participantes.splice(participantes.findIndex(function(element) {
+            return element.email === email;
+        }), 1);
+        
+    }
+    function buscarParticipantesPorNome(nome) {
+        //implemente o código necessário
+        
+       return participantes.filter(function(element){
+           return element.nome === nome;
+       });
+    }    
+    function buscarParticipantesPorSexo(sexo) {
+        //implemente o código necessário
+        
+       return participantes.filter(function(element){
+           return element.sexo === sexo;
+       });
+    }
+    function buscarParticipantesAprovados() {
+        //implemente o código necessário
+        
+       return participantes.filter(function(element){
+           return element.aprovado;
+       });
+    }
+    function buscarParticipantesReprovados() {
+        //implemente o código necessário
+        
+       return participantes.filter(function(element){
+           return element.aprovado === false;
+       });          
 
     }
-    function buscarParticipantesPorNome(nome){
+    function obterParticipante(email) {
         //implemente o código necessário
-        var result=[];
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            if(participantes[i].nome==nome){
-                result.push(participantes[i]);
-            }
-        }
-        return result
-    }    
-    function buscarParticipantesPorSexo(sexo){
-        //implemente o código necessário
-        var i=0;
-        var result=[]
-        while(i<obterTotalDeParticipantes()){
-            if(participantes[i].sexo==sexo){
-            result.push(participantes[i])
-            }
-            i++;
-        }
-        return result;
         
+       return participantes.find(function(element){
+           return element.email === email;
+       });
     }
-    function buscarParticipantesAprovados(){
+    function adicionarNotaAoParticipante(email, nota) {
         //implemente o código necessário
-        var result=[];
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            if(participantes[i].aprovado){
-                result.push(participantes[i]);
-            }
-        }
-        return result;
-    }
-    function buscarParticipantesReprovados(){
-        //implemente o código necessário
-        var result=[];
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            if(participantes[i].aprovado==false){
-                result.push(participantes[i]);
-            }
-        }
-        return result;
-    }
-    function obterParticipante(email){
-        //implemente o código necessário
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            if(participantes[i].email==email){
-                return participantes[i];
-            }
-        }
-    }
-    function adicionarNotaAoParticipante(email, nota){
-        //implemente o código necessário
-        var result= obterParticipante(email);
-        if(result!=undefined){
+                
+        var result = obterParticipante(email);
+        if(result !== undefined) {
             result.nota = nota;
             verificarSeParticipanteEstaAprovado(email);
         }
         return;
+        
+               
     }
-    function obterMediaDasNotasDosParticipantes(){
+    function obterMediaDasNotasDosParticipantes() {
         //implemente o código necessário
-        if(obterTotalDeParticipantes()==0){
+        
+        if (obterTotalDeParticipantes() === 0){
             return 0;
         }
-
-        var result=0;
-        for(var i=0; i<obterTotalDeParticipantes(); i++){
-            result += participantes[i].nota
+        else {
+            var total = participantes.reduce(function(soma, element){
+                return soma + element.nota;
+            }, 0);
+            return total / obterTotalDeParticipantes();    
         }
-        return result/obterTotalDeParticipantes();
+        
+        
     }
-    function obterTotalDeParticipantes(){
+    function obterTotalDeParticipantes() {
         return participantes.length;
     }
-    function verificarSeParticipanteEstaAprovado(email){
+    function verificarSeParticipanteEstaAprovado(email) {
         //implemente o código necessário
+        
         var participante = obterParticipante(email);
-        if(participante == undefined){
+        if(participante == undefined) {
             return;
         }
-        if(participante.nota>=70){
-            participante.aprovado=true;    
+        if(participante.nota >= 70) {
+            participante.aprovado = true;    
         }
-        else{
-            participante.aprovado=false;
+        else {
+            participante.aprovado = false;
         }         
     return participante.aprovado;
+    
 
     }
-    function obterQuantidadeDeParticipantesPorSexo(sexo){
+    function obterQuantidadeDeParticipantesPorSexo(sexo) {
         //implemente o código necessário
-       return buscarParticipantesPorSexo(sexo).length;
+        
+        return buscarParticipantesPorSexo(sexo).length;
+        
+       
     }
 
     return {
