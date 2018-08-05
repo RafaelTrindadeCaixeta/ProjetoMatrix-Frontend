@@ -169,9 +169,7 @@ function SistemaCadastro() {
         sistema.adicionarNotaAoParticipante(email, nota)
 
         armazenamento.atualizarOuInserirDado("participante", participantes);
-
-        sistema.exibirTabela();
-        alterarModoEdicao(false);
+        location.reload()
     }
 
     function exibirTabela() {
