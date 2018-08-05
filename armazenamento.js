@@ -2,7 +2,11 @@ function Armazenamento () {
     var storage = window.localStorage;
     
     function capturarDado(chave){
-        return JSON.parse(storage.getItem(chave));
+        var result = JSON.parse(storage.getItem(chave));
+        if (result == null){
+            result = [];
+        }
+        return result;
     }
     function atualizarOuInserirDado(chave, dado) {
         storage.setItem(chave, JSON.stringify(dado));
@@ -13,4 +17,3 @@ function Armazenamento () {
         atualizarOuInserirDado,
     }
 }
-

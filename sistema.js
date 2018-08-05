@@ -17,7 +17,8 @@ function Participante() {
 function SistemaCadastro() {
 
     //Onde os participantes ficarão armazenados
-   var armazenamento = new Armazenamento()
+    
+    var armazenamento = new Armazenamento();
     var participantes = armazenamento.capturarDado("participante");
     var emailAtual;
     var modoEdicao;
@@ -151,6 +152,7 @@ function SistemaCadastro() {
         var idade = document.getElementById("Idade").value;
         var sexo = document.querySelector('input[name=sexo]:checked').value === "masculino" ? 1 : 2;
         var nota = document.getElementById("Nota").value;
+        
 
         if (modoEdicao) {
             if (email !== emailAtual) {
@@ -174,6 +176,7 @@ function SistemaCadastro() {
 
     function exibirTabela() {
         var alunos = armazenamento.capturarDado("participante");
+
         document.getElementById("corpo").innerHTML = "";
         alunos.forEach(function (elemento) {
             console.log(elemento);
@@ -181,7 +184,7 @@ function SistemaCadastro() {
                 "<tr><td>" + elemento.nome + " " + elemento.sobrenome + "</td><td>" +
                 elemento.idade + "</td><td>" + (elemento.sexo === 1 ? "Masculino" : "Feminino") + "</td><td>" +
                 elemento.nota + "</td><td>" + (elemento.aprovado === true ? "Sim" : "Não") + "</td><td>" +
-                "<a href='#corpo' onclick='sistema.editarAluno(\"" + elemento.email + "\")' >EDITAR</a> | <a href='#corpo'onclick='sistema.excluirAluno(\"" + elemento.email + "\")' >EXCLUIR</a></td></tr>"
+                "<a href='#' onclick='sistema.editarAluno(\"" + elemento.email + "\")' >EDITAR</a> | <a href='#corpo'onclick='sistema.excluirAluno(\"" + elemento.email + "\")' >EXCLUIR</a></td></tr>"
         });
 
     }
@@ -197,8 +200,8 @@ function SistemaCadastro() {
     function editarAluno(email) {
         var participante = sistema.obterParticipante(email);
         emailAtual = email;
-        
-        alterarModoEdicao(true) 
+
+        alterarModoEdicao(true)
         document.getElementById("Nome").value = participante.nome;
         document.getElementById("Sobrenome").value = participante.sobrenome;
         document.getElementById("Idade").value = participante.idade;
@@ -209,7 +212,7 @@ function SistemaCadastro() {
 
     function alterarModoEdicao(modoAtivado) {
         modoEdicao = modoAtivado;
-        if(modoAtivado) {
+        if (modoAtivado) {
             document.getElementById("modo-edicao").style.display = "block";
         }
         else {
@@ -235,6 +238,7 @@ function SistemaCadastro() {
         exibirTabela,
         excluirAluno,
         editarAluno,
+
     };
 }
 
