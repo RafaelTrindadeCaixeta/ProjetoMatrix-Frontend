@@ -19,40 +19,40 @@
         <p>
             <h2 id="modo-edicao" style="display: none;">Modo de Edição</h2>
         </p>
-        <form class="form-horizontal" role="form">
+        <form id="formulario" class="form-horizontal" role="form">
 
             <div class="container">
-                <label for="Nome" class="control-label col-sm-3">Nome</label>
+                <label for="nome" class="control-label col-sm-3">Nome</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="Nome" placeholder="Digite seu Nome">
+                    <input type="text" class="form-control" id="nome" placeholder="Digite seu Nome">
                 </div>
             </div>
 
             <div class="container">
-                <label for="Sobrenome" class="control-label col-sm-3">Sobrenome</label>
+                <label for="sobrenome" class="control-label col-sm-3">Sobrenome</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="Sobrenome" placeholder="Digite seu Sobrenome">
+                    <input type="text" class="form-control" id="sobrenome" placeholder="Digite seu Sobrenome">
                 </div>
             </div>
 
             <div class="container">
                 <label for="email" class="control-label col-sm-3">Email</label>
                 <div class="col-sm-8">
-                    <input type="email" class="form-control" id="Email" placeholder="Digite seu email">
+                    <input type="email" class="form-control" id="email" placeholder="Digite seu email">
                 </div>
             </div>
 
             <div class="container">
-                <label for="Idade" class="control-label col-sm-3">Idade</label>
+                <label for="idade" class="control-label col-sm-3">Idade</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" id="Idade" placeholder="Sua Idade">
+                    <input type="number" class="form-control" id="idade" placeholder="Sua Idade">
                 </div>
             </div>
 
             <div class="container">
-                <label for="Idade" class="control-label col-sm-3">Nota</label>
+                <label for="nota" class="control-label col-sm-3">Nota</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="Nota" placeholder="Sua Nota">
+                    <input type="number" class="form-control" id="nota" placeholder="Sua Nota">
                 </div>
             </div>
 
@@ -74,7 +74,7 @@
                     </div>
                     <p></p>
                     <div class="col-sm-offset-2 col-sm-8">
-                        <button type="button" class="btn btn-primary" onclick="cadastrar()">Cadastrar</button>
+                        <button type="button" class="btn btn-primary" onclick="salvar()" >Cadastrar</button>
                     </div>
         </form>
         </div>
@@ -111,7 +111,7 @@
 
         <script src="armazenamento.js"></script>
         <script src="sistema.js"></script>
-        <script src="Dom.js"></script>
+        <script src="dom.js"></script>
 
 
 </body>

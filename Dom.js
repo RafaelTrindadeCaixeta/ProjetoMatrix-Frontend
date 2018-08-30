@@ -1,79 +1,90 @@
-function cadastrar() {
-    var sistema = new SistemaCadastro();
-    var emailAtual;
-    var modoEdicao;
-    var email = document.getElementById("Email").value;
-    var nome = document.getElementById("Nome").value;
-    var sobrenome = document.getElementById("Sobrenome").value;
-    var idade = document.getElementById("Idade").value;
-    var sexo = document.querySelector('input[name=sexo]:checked').value === "masculino" ? 1 : 2;
-    var nota = document.getElementById("Nota").value;
 
+var sistema = new SistemaCadastro();
+var modoEdicao = false;
+
+
+(function () {
+    exibirTabela()
+
+})();
+
+
+function salvar() {
+    var form = document.querySelector("#formulario");
+    var sexo = document.querySelector('input[name=sexo]:checked').value === "masculino" ? 1 : 2;
 
     if (modoEdicao) {
-        if (email !== emailAtual) {
-            if (sistema.obterParticipante(email) != undefined) {
-                alert("Não é possível editar participante. Email já cadastrado.");
-                alterarModoEdicao(false);
-                return;
-            }
+        sistema.atualizarParticipante(
+            form.nome.value,
+            form.sobrenome.value,
+            form.email.value,
+            form.idade.value,
+            sexo,
+            form.nota.value
+        );
+        window.location.reload(true);
+        window.alert("Participante editado com sucesso!");
+    }
+    else {
+        try {
+            sistema.adicionarParticipante(
+                form.nome.value,
+                form.sobrenome.value,
+                form.email.value,
+                form.idade.value,
+                sexo
+            );
+            sistema.adicionarNotaAoParticipante(
+                form.email.value,
+                form.nota.value
+            );
+            window.alert("Participante inserido com sucesso!");
+            window.location.reload(true);
         }
-        sistema.excluirAluno(emailAtual);
-    }
-
-    sistema.adicionarParticipante(nome, sobrenome, email, idade, sexo)
-    sistema.adicionarNotaAoParticipante(email, nota)
-    
-    location.reload()
-
-
-    function alterarModoEdicao(modoAtivado) {
-        modoEdicao = modoAtivado;
-        if (modoAtivado) {
-            document.getElementById("modo-edicao").style.display = "block";
-        }
-        else {
-            emailAtual = "";
-            document.getElementById("modo-edicao").style.display = "none"
+        catch (Error) {
+            window.alert(Error.message);
         }
     }
-
-    function editarAluno(email) {
-        var participante = sistema.obterParticipante(email);
-        emailAtual = email;
-
-        alterarModoEdicao(true)
-        document.getElementById("Nome").value = participante.nome;
-        document.getElementById("Sobrenome").value = participante.sobrenome;
-        document.getElementById("Idade").value = participante.idade;
-        document.getElementById("Email").value = participante.email;
-        participante.sexo === 1 ? document.getElementById('radio-masculino').checked = true : document.getElementById('radio-feminino').checked = true;
-        document.getElementById("Nota").value = participante.nota;
-    }
+    modoEdicao = false;
+}
 
 
-    function exibirTabela() {
-        var alunos = capturarDado("participante");
+function editarAluno(email) {
+    modoEdicao = true;    
+    var participante = sistema.obterParticipante(email);
+    var form = document.querySelector("#formulario");
 
-        document.getElementById("corpo").innerHTML = "";
-        alunos.forEach(function (elemento) {
-            console.log(elemento);
-            document.getElementById("corpo").innerHTML +=
-                "<tr><td>" + elemento.nome + " " + elemento.sobrenome + "</td><td>" +
-                elemento.idade + "</td><td>" + (elemento.sexo === 1 ? "Masculino" : "Feminino") + "</td><td>" +
-                elemento.nota + "</td><td>" + (elemento.aprovado === true ? "Sim" : "Não") + "</td><td>" +
-                "<a href='#' onclick='sistema.editarAluno(\"" + elemento.email + "\")' >EDITAR</a> | <a href='#corpo'onclick='sistema.excluirAluno(\"" + elemento.email + "\")' >EXCLUIR</a></td></tr>"
-        });
-
-    }
-
-    return {
-        cadastrar,
-        alterarModoEdicao,
-        editarAluno,
-        exibirTabela,
-
-    };
+    form.nome.value = participante.nome;
+    form.sobrenome.value = participante.sobrenome;
+    form.idade.value = participante.idade;
+    form.email.value = participante.email;
+    participante.email.disabled = true;
+    form.sexo.value = participante.sexo === 1 ? "masculino" : "feminino";
+    form.nota.value = participante.nota;
 
 }
+
+function excluirAluno() {
+
+    sistema.removerParticipante(email);
+    window.location.reload(true);
+
+}
+function exibirTabela() {
+
+    var participante = sistema.obterParticipantes();
+
+    document.getElementById("corpo").innerHTML = "";
+    participante.forEach(function (objeto) {
+
+        document.getElementById("corpo").innerHTML +=
+            "<tr><td>" + objeto.nome + " " + objeto.sobrenome + "</td><td>" +
+            objeto.idade + "</td><td>" + (objeto.sexo === 1 ? "Masculino" : "Feminino") + "</td><td>" +
+            objeto.nota + "</td><td>" + (objeto.aprovado === true ? "Sim" : "Não") + "</td><td>" +
+            "<a href='#' onclick='editarAluno(\"" + objeto.email + "\")' >EDITAR</a> | <a href='#corpo'onclick='excluirAluno(\"" + objeto.email + "\")' >EXCLUIR</a></td></tr>"
+    });
+
+}
+
+
 
