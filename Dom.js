@@ -44,8 +44,8 @@ function salvar() {
                 window.alert("Participante inserido com sucesso!");
                 window.location.reload(true);
             })
-            .catch((result) => {
-                window.alert(result);
+            .catch(() => {
+                window.alert("Participante com e-mail: '" + form.email.value + "' , já está cadastrado!");
                 window.location.reload(true)
             });
 
