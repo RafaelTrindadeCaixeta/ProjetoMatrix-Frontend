@@ -1,55 +1,39 @@
 function ArmazenamentoHTTP() {
 
     function recuperarTodosOsDadosParticipantes() {
-        var participantes = [];
-        $.ajax({
-            type: 'GET',
-            url: 'http://matrix.avalie.net/api/participantes',
-            datatype: 'json',
-            success: function (data) {
-                participantes = data;
-            }
-        });
 
-        return participantes;
+        return axios.get('http://matrix.avalie.net/api/participantes/')
+            .then(function (result) {
+                return result.data;
+            });
     }
 
     function adicionarDado(objeto) {
-        $.ajax({
-            type: 'POST',
-            url: 'http://matrix.avalie.net/api/participantes',
-            datatype: 'json',
-            data: JSON.stringify(objeto),
-            async: false
-
-        });
+        return axios.post('http://matrix.avalie.net/api/participantes', objeto)
+            .then(function (result) {
+                return result.data;
+            })
+            .catch(function (response) {
+                throw response.data.message;
+            });
     }
 
-    function excluirDado(qualidade, elemento) {
-        var participante = obterUm(qualidade, elemento);
-        $.ajax({
-            type: 'DELETE',
-            url: 'http://matrix.avalie.net/api/participantes'+ participante.id,
-            datatype: 'json',
-            async: true
-        })
+    function excluirDado(id) {
+        return axios.delete('http://matrix.avalie.net/api/participantes/' + id);
     }
 
     function atualizarDado(objeto) {
-        $.ajax({
-            type: 'PUT',
-            url: 'http://matrix.avalie.net/api/participantes' + objeto.id,
-            datatype: 'json',
-            data: JSON.stringify(objeto),
-            async: false
-        })
-
+        return axios.put('http://matrix.avalie.net/api/participantes/' + objeto.id, objeto)
+            .then(function (result) {
+                return result.data;
+            });
     }
 
-    function obterUm(qualidade, elemento) {
-        return recuperarTodosOsDadosParticipantes().find(function (objeto) {
-            return objeto[qualidade] === elemento;
-        });
+    function obterUm(id) {
+        return axios.get('http://matrix.avalie.net/api/participantes/' + id)
+            .then(function (result) {
+                return result.data;
+            });
     }
 
     function obterVarios(qualidade, elemento) {
